@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+  docker-sshd:
+    hostname: docker-sshd
+    build:
+      context: ./sshd
+      dockerfile: Dockerfile
+    image: docker-sshd
+    #command: sleep 60 && /entrypoint.sh
+    container_name: docker-sshd
+    restart: always
+    ports:
+      - "2222:22"
+    environment:    
+      - ROOT_PASSWORD=password1234
+    logging:
+      driver: "splunk"
+      options:
+        splunk-token: "3f066d2a-c871-4800-87fc-e6be5fa69f1b"
+        splunk-url: "https://127.0.0.1:8088"
+        splunk-insecureskipverify: "true"
+        splunk-format: "raw"
+  docker-hydra:
+    hostname: docker-hydra
+    build: 
+      context: ./hydra
+      dockerfile: Dockerfile
+    image: docker-hydra
+    container_name: docker-hydra
+    restart: "no"
